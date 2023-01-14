@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,21 +9,15 @@ import {
   Platform,
   KeyboardAvoidingView,
   Keyboard,
-  TouchableWithoutFeedback,
   Image,
+  TouchableWithoutFeedback,
 } from 'react-native';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [login, setLogin] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [fontsLoaded] = useFonts({
-    'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
-    'Roboto-Medium': require('./assets/fonts/Roboto-Medium.ttf'),
-  });
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
@@ -38,24 +32,11 @@ export default function RegistrationScreen() {
     setPassword('');
   };
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return <Text>Loading...</Text>;
-  }
-
   return (
-    <TouchableWithoutFeedback
-      onPress={keyboardHide}
-      onLayout={onLayoutRootView}
-    >
+    <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
         <ImageBackground
-          source={require('./images/bg.jpg')}
+          source={require('../../images/bg.jpg')}
           style={styles.image}
         >
           <KeyboardAvoidingView
@@ -66,12 +47,14 @@ export default function RegistrationScreen() {
               style={{ ...styles.form, height: isShowKeyboard ? 375 : 549 }}
             >
               <View style={styles.avatarWpar}>
-                <Image
-                  // source={require('./images/bg.jpg')}
-                  style={styles.avatarImg}
-                  resizeMode="cover"
-                ></Image>
-                <View style={styles.avatarAdd}></View>
+                <View style={styles.avatarBlock}>
+                  <Image
+                    source={require('../../images/bg.jpg')}
+                    style={styles.avatarImg}
+                    resizeMode="cover"
+                  ></Image>
+                  <View style={styles.avatarAdd}></View>
+                </View>
               </View>
               <View style={styles.header}>
                 <Text style={styles.title}>Регистрация</Text>
@@ -108,9 +91,9 @@ export default function RegistrationScreen() {
               <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
                 <Text style={styles.btnText}>Зарегистрироваться</Text>
               </TouchableOpacity>
-              <View>
+              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                 <Text style={styles.ask}>Уже есть аккаунт? Войти</Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -179,8 +162,13 @@ const styles = StyleSheet.create({
   },
   avatarWpar: {
     position: 'absolute',
-    left: '40%',
     top: -60,
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: '100%',
+  },
+  avatarBlock: {
+    position: 'relative',
     width: 120,
     height: 120,
     borderRadius: 16,
@@ -193,14 +181,19 @@ const styles = StyleSheet.create({
 
     width: 25,
     height: 25,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#fff',
     borderRadius: 100,
   },
   avatarImg: {
     width: '100%',
     height: '100%',
+    borderRadius: 16,
   },
   ask: {
+    fontfamily: 'Roboto',
+    fontSize: 16,
+    lineHeight: 19,
     textAlign: 'center',
+    color: '#1B4371',
   },
 });

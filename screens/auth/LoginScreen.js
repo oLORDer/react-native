@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,19 +10,12 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
-  Image,
 } from 'react-native';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [fontsLoaded] = useFonts({
-    'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
-    'Roboto-Medium': require('./assets/fonts/Roboto-Medium.ttf'),
-  });
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
@@ -36,24 +29,11 @@ export default function LoginScreen() {
     setPassword('');
   };
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return <Text>Loading...</Text>;
-  }
-
   return (
-    <TouchableWithoutFeedback
-      onPress={keyboardHide}
-      onLayout={onLayoutRootView}
-    >
+    <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
         <ImageBackground
-          source={require('./images/bg.jpg')}
+          source={require('../../images/bg.jpg')}
           style={styles.image}
         >
           <KeyboardAvoidingView
@@ -89,9 +69,11 @@ export default function LoginScreen() {
               <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
                 <Text style={styles.btnText}>Войти</Text>
               </TouchableOpacity>
-              <View>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Registration')}
+              >
                 <Text style={styles.ask}>Нет аккаунта? Зарегистрироваться</Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -158,6 +140,10 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   ask: {
+    fontfamily: 'Roboto',
+    fontSize: 16,
+    lineHeight: 19,
     textAlign: 'center',
+    color: '#1B4371',
   },
 });

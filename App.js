@@ -1,28 +1,33 @@
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { useCallback } from 'react';
+import { Text, TouchableWithoutFeedback } from 'react-native';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import { NavigationContainer } from '@react-navigation/native';
+
+import useRoute from './router';
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
+    'Roboto-Medium': require('./assets/fonts/Roboto-Medium.ttf'),
+    'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
+  });
+
+  const routing = useRoute(1);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
-    <View style={styles.container}>
-      <ImageBackground source={require('./images/bg.jpg')} style={styles.image}>
-        <Text style={styles.text}>Own</Text>
-      </ImageBackground>
-    </View>
+    <TouchableWithoutFeedback onLayout={onLayoutRootView}>
+      <NavigationContainer>{routing}</NavigationContainer>
+    </TouchableWithoutFeedback>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  text: {
-    fontSize: 30,
-    color: 'red',
-    textAlign: 'center',
-  },
-  image: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
-  },
-});
