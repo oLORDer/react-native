@@ -7,21 +7,21 @@ import location from '../images/icons/location.png';
 
 const arr = [
   {
+    id: 11,
     img: im,
     descr: 'Лес',
     comments: 11,
     location: 'Ivano-Frankivsk Region, Ukraine',
-    comments: 13,
   },
-  { img: im, descr: 'Озеро', comments: 33, location: 'kiev', comments: 13 },
-  { img: im, descr: 'Озеро', comments: 33, location: 'kiev', comments: 13 },
-  { img: im, descr: 'Озеро', comments: 33, location: 'kiev', comments: 13 },
+  { id: 12, img: im, descr: 'Озеро', comments: 33, location: 'kiev' },
+  { id: 13, img: im, descr: 'Озеро', comments: 33, location: 'kiev' },
+  { id: 14, img: im, descr: 'Озеро', comments: 33, location: 'kiev' },
   {
+    id: 15,
     img: im,
     descr: 'Река',
     comments: 55,
     location: 'chernivtsi',
-    comments: 13,
   },
 ];
 
@@ -64,6 +64,7 @@ export default function PostsScreen({ navigation }) {
               </View>
             </View>
           )}
+          keyExtractor={(item) => item.id}
         />
       </View>
     </View>

@@ -15,21 +15,44 @@ import like from '../images/icons/like.png';
 
 const arr = [
   {
+    id: 11,
     img: im,
     descr: 'Лес',
     comments: 11,
     location: 'Ukraine',
-    comments: 13,
+    likes: 13,
   },
-  { img: im, descr: 'Озеро', comments: 33, location: 'kiev', comments: 13 },
-  { img: im, descr: 'Озеро', comments: 33, location: 'kiev', comments: 13 },
-  { img: im, descr: 'Озеро', comments: 33, location: 'kiev', comments: 13 },
   {
+    id: 12,
+    img: im,
+    descr: 'Озеро',
+    comments: 33,
+    location: 'kiev',
+    likes: 13,
+  },
+  {
+    id: 13,
+    img: im,
+    descr: 'Озеро',
+    comments: 33,
+    location: 'kiev',
+    likes: 13,
+  },
+  {
+    id: 14,
+    img: im,
+    descr: 'Озеро',
+    comments: 33,
+    location: 'kiev',
+    likes: 13,
+  },
+  {
+    id: 15,
     img: im,
     descr: 'Река',
     comments: 55,
     location: 'chernivtsi',
-    comments: 13,
+    likes: 13,
   },
 ];
 
@@ -74,7 +97,7 @@ export default function ProfileScreen({ navigation }) {
                     <Image source={shape} />
                     <Text style={styles.itemCommentsText}>{item.comments}</Text>
                     <Image source={like} />
-                    <Text style={styles.itemCommentsText}>{item.comments}</Text>
+                    <Text style={styles.itemCommentsText}>{item.likes}</Text>
                   </View>
                   <View style={styles.itemLocation}>
                     <Image source={location} />
@@ -83,6 +106,7 @@ export default function ProfileScreen({ navigation }) {
                 </View>
               </View>
             )}
+            keyExtractor={(item) => item.id}
           />
         </View>
       </ImageBackground>
