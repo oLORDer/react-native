@@ -20,7 +20,6 @@ export default function Header({ navigation, text, home }) {
         <Text style={styles.text}>Публикации</Text>
         <Image
           source={require('../images/icons/logout.png')}
-          style={styles.logoutIcon}
           width={24}
           height={24}
         ></Image>
@@ -32,7 +31,6 @@ export default function Header({ navigation, text, home }) {
     <View style={styles.wrap}>
       <Image
         source={require('../images/icons/arrow-left.png')}
-        style={styles.logoutIcon}
         width={24}
         height={24}
       ></Image>
@@ -59,5 +57,4 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     textAlign: 'center',
   },
-  logoutIcon: {},
 });

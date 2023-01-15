@@ -1,17 +1,172 @@
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Image,
+  ImageBackground,
+} from 'react-native';
 
 import Header from '../components/Header';
+import im from '../images/bg.jpg';
+import shape from '../images/icons/shapeOrange.png';
+import location from '../images/icons/location.png';
+import like from '../images/icons/like.png';
+
+const arr = [
+  {
+    img: im,
+    descr: 'Лес',
+    comments: 11,
+    location: 'Ukraine',
+    comments: 13,
+  },
+  { img: im, descr: 'Озеро', comments: 33, location: 'kiev', comments: 13 },
+  { img: im, descr: 'Озеро', comments: 33, location: 'kiev', comments: 13 },
+  { img: im, descr: 'Озеро', comments: 33, location: 'kiev', comments: 13 },
+  {
+    img: im,
+    descr: 'Река',
+    comments: 55,
+    location: 'chernivtsi',
+    comments: 13,
+  },
+];
 
 export default function ProfileScreen({ navigation }) {
   return (
     <View style={styles.wrap}>
-      <Header />
-      <Text style={styles.content}>ProfileScreen</Text>
+      <ImageBackground
+        source={require('../images/bg.jpg')}
+        style={styles.image}
+      >
+        <View style={styles.main}>
+          <View style={styles.user}>
+            <View style={styles.avatarWpar}>
+              <View style={styles.avatarBlock}>
+                <Image
+                  source={require('../images/bg.jpg')}
+                  style={styles.avatarImg}
+                  resizeMode="cover"
+                ></Image>
+                <View style={styles.avatarAdd}></View>
+              </View>
+            </View>
+            <Image
+              source={require('../images/icons/logout.png')}
+              width={24}
+              height={24}
+              style={styles.logout}
+            />
+            <Text style={styles.userName}>Natali Romanova</Text>
+          </View>
+          <FlatList
+            style={styles.list}
+            data={arr}
+            renderItem={({ item }) => (
+              <View style={styles.item}>
+                <View style={styles.itemImgWrap}>
+                  <Image style={styles.itemImg} source={item.img} />
+                </View>
+                <Text style={styles.itemDescr}>{item.descr}</Text>
+                <View style={styles.itemComAndDescr}>
+                  <View style={styles.itemComments}>
+                    <Image source={shape} />
+                    <Text style={styles.itemCommentsText}>{item.comments}</Text>
+                    <Image source={like} />
+                    <Text style={styles.itemCommentsText}>{item.comments}</Text>
+                  </View>
+                  <View style={styles.itemLocation}>
+                    <Image source={location} />
+                    <Text style={styles.itemLocationText}>{item.location}</Text>
+                  </View>
+                </View>
+              </View>
+            )}
+          />
+        </View>
+      </ImageBackground>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  wrap: { flex: 1, paddingTop: 55 },
-  content: { paddingHorizontal: 16 },
+  wrap: { flex: 1, backgroundColor: '#fff' },
+  main: {
+    paddingHorizontal: 16,
+    marginTop: 147,
+    backgroundColor: '#fff',
+    borderRadius: '25px 25px 0 0',
+  },
+  user: {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    paddingTop: 24,
+  },
+  avatarWpar: {
+    position: 'absolute',
+    top: -60,
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: '100%',
+  },
+  avatarBlock: {
+    position: 'relative',
+    width: 120,
+    height: 120,
+    borderRadius: 16,
+    backgroundColor: '#F6F6F6',
+  },
+  avatarAdd: {
+    position: 'absolute',
+    top: 81,
+    left: 107,
+
+    width: 25,
+    height: 25,
+    backgroundColor: '#fff',
+    borderRadius: 100,
+  },
+  avatarImg: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 16,
+  },
+  logout: { position: 'absolute', top: 24, right: 0 },
+  userName: {
+    fontFamily: 'Roboto-Medium',
+    width: '100%',
+    fontSize: 30,
+    marginBottom: 33,
+    textAlign: 'center',
+    marginTop: 72,
+  },
+  list: {},
+  item: {
+    marginBottom: 32,
+  },
+  itemImgWrap: {
+    width: '100%',
+    height: 240,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  itemImg: { width: '100%', height: '100%' },
+  itemDescr: { marginVertical: 8, fontFamily: 'Roboto-Medium', fontsize: 16 },
+  itemComAndDescr: { flexDirection: 'row', justifyContent: 'space-between' },
+  itemComments: { flexDirection: 'row' },
+  itemCommentsText: {
+    marginLeft: 6,
+    color: '#BDBDBD',
+    fontSize: 16,
+    marginRight: 24,
+  },
+  itemLocation: { flexDirection: 'row', alignItems: 'center' },
+  itemLocationText: {
+    marginLeft: 6,
+    fontSize: 16,
+    fontFamily: 'Roboto-Regular',
+    textDecorationLine: 'underline',
+  },
 });

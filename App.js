@@ -13,7 +13,7 @@ export default function App() {
     'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
   });
 
-  const routing = useRoute(1);
+  const routing = useRoute(true);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
