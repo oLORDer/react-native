@@ -7,11 +7,10 @@ import {
   ImageBackground,
 } from 'react-native';
 
-import Header from '../components/Header';
-import im from '../images/bg.jpg';
-import shape from '../images/icons/shapeOrange.png';
-import location from '../images/icons/location.png';
-import like from '../images/icons/like.png';
+import im from '../../images/bg.jpg';
+import shape from '../../images/icons/shapeOrange.png';
+import location from '../../images/icons/location.png';
+import like from '../../images/icons/like.png';
 
 const arr = [
   {
@@ -60,7 +59,7 @@ export default function ProfileScreen({ navigation }) {
   return (
     <View style={styles.wrap}>
       <ImageBackground
-        source={require('../images/bg.jpg')}
+        source={require('../../images/bg.jpg')}
         style={styles.image}
       >
         <View style={styles.main}>
@@ -68,7 +67,7 @@ export default function ProfileScreen({ navigation }) {
             <View style={styles.avatarWpar}>
               <View style={styles.avatarBlock}>
                 <Image
-                  source={require('../images/bg.jpg')}
+                  source={require('../../images/bg.jpg')}
                   style={styles.avatarImg}
                   resizeMode="cover"
                 ></Image>
@@ -76,7 +75,7 @@ export default function ProfileScreen({ navigation }) {
               </View>
             </View>
             <Image
-              source={require('../images/icons/logout.png')}
+              source={require('../../images/icons/logout.png')}
               width={24}
               height={24}
               style={styles.logout}

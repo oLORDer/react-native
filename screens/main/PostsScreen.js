@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
 
-import Header from '../components/Header';
-import im from '../images/bg.jpg';
-import shape from '../images/icons/shape.png';
-import location from '../images/icons/location.png';
+import Header from '../../components/Header';
+import im from '../../images/bg.jpg';
+import shape from '../../images/icons/shape.png';
+import location from '../../images/icons/location.png';
 
 const arr = [
   {
@@ -33,7 +33,7 @@ export default function PostsScreen({ navigation }) {
         <View style={styles.user}>
           <View style={styles.userBlock}>
             <Image
-              source={require('../images/bg.jpg')}
+              source={require('../../images/bg.jpg')}
               style={styles.userImg}
               resizeMode="cover"
             ></Image>
