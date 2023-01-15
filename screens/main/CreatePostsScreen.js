@@ -14,7 +14,7 @@ import { Feather } from '@expo/vector-icons';
 
 import location from '../../images/icons/location.png';
 
-export default function CreatePostsScreen({ navigation }) {
+export default function CreatePostsScreen() {
   const [title, setTitle] = useState('');
   const [locaton, setLocaton] = useState('');
 
@@ -78,7 +78,6 @@ export default function CreatePostsScreen({ navigation }) {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
-              onPress={() => navigation.navigate('Coments')}
             >
               <Feather name="trash-2" size={24} color="black" />
             </TouchableOpacity>

@@ -18,16 +18,20 @@ const arr = [
     img: im,
     descr: 'Лес',
     comments: 11,
-    location: 'Ukraine',
-    likes: 13,
+    location: 'Ivano-Frankivsk Region, Ukraine',
+    name: 'pari',
+    place: 'pari',
+    coords: { latitude: '48.85939116373584', longitude: '2.338702259129943' },
   },
   {
     id: 12,
     img: im,
     descr: 'Озеро',
     comments: 33,
-    location: 'kiev',
-    likes: 13,
+    location: '衡阳市,Китай, Хунань',
+    name: 'Китай',
+    place: 'Китай',
+    coords: { latitude: '26.899104665321406', longitude: '112.57420931307371' },
   },
   {
     id: 13,
@@ -35,7 +39,9 @@ const arr = [
     descr: 'Озеро',
     comments: 33,
     location: 'kiev',
-    likes: 13,
+    name: 'pari',
+    place: 'pari',
+    coords: { latitude: '48.856614', longitude: '2.3522219' },
   },
   {
     id: 14,
@@ -43,7 +49,9 @@ const arr = [
     descr: 'Озеро',
     comments: 33,
     location: 'kiev',
-    likes: 13,
+    name: 'pari',
+    place: 'pari',
+    coords: { latitude: '48.856614', longitude: '2.3522219' },
   },
   {
     id: 15,
@@ -51,7 +59,7 @@ const arr = [
     descr: 'Река',
     comments: 55,
     location: 'chernivtsi',
-    likes: 13,
+    coords: { latitude: '48.856614', longitude: '2.3522219' },
   },
 ];
 
@@ -94,13 +102,32 @@ export default function ProfileScreen({ navigation }) {
                 <View style={styles.itemComAndDescr}>
                   <View style={styles.itemComments}>
                     <Image source={shape} />
-                    <Text style={styles.itemCommentsText}>{item.comments}</Text>
+                    <Text
+                      style={styles.itemCommentsText}
+                      onPress={() => navigation.navigate('Comments')}
+                    >
+                      {item.comments}
+                    </Text>
                     <Image source={like} />
                     <Text style={styles.itemCommentsText}>{item.likes}</Text>
                   </View>
                   <View style={styles.itemLocation}>
                     <Image source={location} />
-                    <Text style={styles.itemLocationText}>{item.location}</Text>
+                    <Text
+                      style={styles.itemLocationText}
+                      onPress={() =>
+                        navigation.navigate('Map', {
+                          coords: {
+                            latitude: item.coords.latitude,
+                            longitude: item.coords.longitude,
+                          },
+                          title: item.name,
+                          description: item.place,
+                        })
+                      }
+                    >
+                      {item.location}
+                    </Text>
                   </View>
                 </View>
               </View>
