@@ -21,7 +21,7 @@ const arr = [
     location: 'Ivano-Frankivsk Region, Ukraine',
     name: 'pari',
     place: 'pari',
-    coords: { latitude: '48.85939116373584', longitude: '2.338702259129943' },
+    coords: { latitude: '48.92297644095258', longitude: '24.71031848277903' },
   },
   {
     id: 12,

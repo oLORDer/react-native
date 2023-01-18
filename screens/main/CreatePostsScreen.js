@@ -9,24 +9,61 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Feather } from '@expo/vector-icons';
+import { Camera } from 'expo-camera';
+import * as Location from 'expo-location';
 
-import location from '../../images/icons/location.png';
+import locationImg from '../../images/icons/location.png';
 
-export default function CreatePostsScreen() {
+export default function CreatePostsScreen({ navigation }) {
   const [title, setTitle] = useState('');
-  const [locaton, setLocaton] = useState('');
+  const [locationName, setLocationName] = useState('');
+  const [camera, setCamera] = useState(null);
+  const [photo, setPhoto] = useState('');
+  const [location, setLocation] = useState(null);
+  const [isDisableBtn, setIsDisableBtn] = useState(true);
+  const [hasCamPermission, setHasCamPermission] = useState(false);
+  const [hasLocationPermission, setHasLocationPermission] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasCamPermission(status === 'granted');
+
+      const locationStatus = await Location.requestForegroundPermissionsAsync();
+      if (locationStatus.status) {
+        setHasLocationPermission(locationStatus.status === 'granted');
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    const isPostDataReady = title !== '' && locationName !== '' && photo !== '';
+    setIsDisableBtn(!isPostDataReady);
+  }, [title, locationName, photo]);
 
   const keyboardHide = () => {
     Keyboard.dismiss();
   };
 
-  const handleSubmit = () => {
-    console.log(title, locaton);
+  const handleSubmit = async () => {
     keyboardHide();
     setTitle('');
-    setLocaton('');
+    setLocationName('');
+    setPhoto('');
+
+    const locationData = await Location.getCurrentPositionAsync({});
+    setLocation(locationData);
+    console.log('location>>>>>', locationData);
+    console.log('title>>', title, locationName);
+
+    navigation.navigate('DefaultPosts');
+  };
+
+  const takePhoto = async () => {
+    const { uri } = await camera.takePictureAsync({ skipProcessing: false });
+    setPhoto(uri);
   };
 
   return (
@@ -34,7 +71,39 @@ export default function CreatePostsScreen() {
       <View style={styles.container}>
         <KeyboardAvoidingView style={styles.KeyboardWrap}>
           <View style={styles.form}>
-            <View style={styles.formImgWrap}></View>
+            <View style={styles.formImgWrap}>
+              {photo === '' ? (
+                <Camera style={styles.camera} ref={setCamera}>
+                  <TouchableOpacity style={styles.snapWrap} onPress={takePhoto}>
+                    <View style={styles.snap}></View>
+                  </TouchableOpacity>
+                </Camera>
+              ) : (
+                <View
+                  style={{
+                    height: '100%',
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Image
+                    source={{ uri: photo }}
+                    style={{ height: '100%', width: '100%' }}
+                  />
+                  <TouchableOpacity
+                    style={{
+                      ...styles.snapWrap,
+                      position: 'absolute',
+                      backgroundColor: 'red',
+                    }}
+                    onPress={() => setPhoto('')}
+                  >
+                    <View style={styles.snap}></View>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
             <Text style={styles.formImgText}>Загрузите фото</Text>
             <View>
               <TextInput
@@ -47,16 +116,20 @@ export default function CreatePostsScreen() {
             <View>
               <Image
                 style={{ position: 'absolute', top: 14 }}
-                source={location}
+                source={locationImg}
               />
               <TextInput
                 style={{ ...styles.formInput, paddingLeft: 28 }}
                 placeholder="Местность..."
-                value={locaton}
-                onChangeText={(value) => setLocaton(value)}
+                value={locationName}
+                onChangeText={(value) => setLocationName(value)}
               />
             </View>
-            <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
+            <TouchableOpacity
+              style={styles.btn}
+              onPress={handleSubmit}
+              disabled={isDisableBtn}
+            >
               <Text style={styles.btnText}>Опубликовать</Text>
             </TouchableOpacity>
           </View>
@@ -113,6 +186,19 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 8,
   },
+  camera: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+  },
+  snapWrap: {
+    borderRadius: 100,
+    backgroundColor: '#fff',
+    width: 60,
+    height: 60,
+  },
+  snap: {},
   formImgText: {
     fontSize: 16,
     color: '#BDBDBD',
