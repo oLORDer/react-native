@@ -5,7 +5,12 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
+
+import { useDispatch } from 'react-redux';
+
+import { logOut } from '../../redux/auth/auth-operations';
 
 import im from '../../images/bg.jpg';
 import shape from '../../images/icons/shapeOrange.png';
@@ -64,6 +69,12 @@ const arr = [
 ];
 
 export default function ProfileScreen({ navigation }) {
+  const dispatch = useDispatch();
+
+  const onLogout = () => {
+    dispatch(logOut());
+    navigation.navigate('Login');
+  };
   return (
     <View style={styles.wrap}>
       <ImageBackground
@@ -82,12 +93,13 @@ export default function ProfileScreen({ navigation }) {
                 <View style={styles.avatarAdd}></View>
               </View>
             </View>
-            <Image
-              source={require('../../images/icons/logout.png')}
-              width={24}
-              height={24}
-              style={styles.logout}
-            />
+            <TouchableOpacity style={styles.logout} onPress={onLogout}>
+              <Image
+                source={require('../../images/icons/logout.png')}
+                width={24}
+                height={24}
+              />
+            </TouchableOpacity>
             <Text style={styles.userName}>Natali Romanova</Text>
           </View>
           <FlatList

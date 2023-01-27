@@ -1,4 +1,8 @@
-import { StyleSheet, Text, View, FlatList, Image, Button } from 'react-native';
+import { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
+import { useSelector } from 'react-redux';
+import { onSnapshot, collection } from 'firebase/firestore';
+import { db } from '../../firebase/config';
 
 import im from '../../images/bg.jpg';
 import shape from '../../images/icons/shape.png';
@@ -56,19 +60,50 @@ const arr = [
 ];
 
 export default function PostsScreen({ navigation }) {
+  const [posts, setPosts] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
+
+  const getUserInfo = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    setUserInfo(getUserInfo);
+  }, [getUserInfo]);
+
+  const postsStore = collection(db, `posts`);
+
+  const getPosts = async () => {
+    onSnapshot(postsStore, (data) => {
+      if (data.docs.length) {
+        const dbPosts = data.docs.map((post) => ({
+          ...post.data(),
+          id: post.id,
+        }));
+        console.log('dbPosts--->>>', dbPosts);
+        setPosts(dbPosts);
+      }
+    });
+  };
+
+  useEffect(() => {
+    getPosts();
+  }, []);
   return (
     <View style={styles.main}>
       <View style={styles.user}>
         <View style={styles.userBlock}>
           <Image
-            source={require('../../images/bg.jpg')}
+            source={
+              userInfo?.avatarURL
+                ? { uri: userInfo.avatarURL }
+                : require('../../images/bg.jpg')
+            }
             style={styles.userImg}
             resizeMode="cover"
           ></Image>
         </View>
         <View>
-          <Text style={styles.userName}>Natali Romanova</Text>
-          <Text style={styles.userEmail}>email@example.com</Text>
+          <Text style={styles.userName}>{userInfo?.login}</Text>
+          <Text style={styles.userEmail}>{userInfo?.email}</Text>
         </View>
       </View>
       <FlatList
@@ -85,7 +120,13 @@ export default function PostsScreen({ navigation }) {
                 <Image source={shape} />
                 <Text
                   style={styles.itemCommentsText}
-                  onPress={() => navigation.navigate('Comments')}
+                  onPress={() =>
+                    navigation.navigate('Comments', {
+                      photo: item.photo,
+                      postId: item.id,
+                      authorId: item.userId,
+                    })
+                  }
                 >
                   {item.comments}
                 </Text>

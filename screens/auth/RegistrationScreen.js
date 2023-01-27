@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,12 +12,43 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import * as ImagePicker from 'expo-image-picker';
+
+import { register, getCurrentUser } from '../../redux/auth/auth-operations';
 
 export default function RegistrationScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [login, setLogin] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [avatar, setAvatar] = useState(null);
+
+  const userId = useSelector((store) => {
+    return store.auth.userId;
+  });
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (userId === null) {
+      dispatch(getCurrentUser());
+    }
+    navigation.navigate(userId ? 'Home' : 'Registration');
+  }, [userId]);
+
+  const getAvatar = async () => {
+    let file = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.3,
+    });
+    if (!file.canceled) {
+      setAvatar(file.assets[0].uri);
+    }
+    console.log(file.assets[0].uri);
+  };
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
@@ -25,11 +56,12 @@ export default function RegistrationScreen({ navigation }) {
   };
 
   const handleSubmit = () => {
-    console.log(login, email, password);
+    dispatch(register({ login, email, password, avatar }));
     keyboardHide();
     setLogin('');
     setEmail('');
     setPassword('');
+    setAvatar(null);
   };
 
   return (
@@ -49,11 +81,14 @@ export default function RegistrationScreen({ navigation }) {
               <View style={styles.avatarWpar}>
                 <View style={styles.avatarBlock}>
                   <Image
-                    source={require('../../images/bg.jpg')}
+                    source={{ uri: avatar }}
                     style={styles.avatarImg}
                     resizeMode="cover"
                   ></Image>
-                  <View style={styles.avatarAdd}></View>
+                  <TouchableOpacity
+                    onPress={getAvatar}
+                    style={styles.avatarAdd}
+                  ></TouchableOpacity>
                 </View>
               </View>
               <View style={styles.header}>

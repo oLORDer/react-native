@@ -5,29 +5,21 @@ import LoginScreen from './screens/auth/LoginScreen';
 import RegistrationScreen from './screens/auth/RegistrationScreen';
 import Home from './screens/main/Home';
 
-// указывает на группу навигаторов
 const MainStack = createStackNavigator();
 
-export default function useRoute(isAuth) {
-  if (!isAuth) {
-    return (
-      <MainStack.Navigator initialRouteName="Login">
-        <MainStack.Screen
-          options={{ headerShown: false }}
-          name="Login"
-          component={LoginScreen}
-        />
-        <MainStack.Screen
-          options={{ headerShown: false }}
-          name="Registration"
-          component={RegistrationScreen}
-        />
-      </MainStack.Navigator>
-    );
-  }
-
+export default function useRoute() {
   return (
-    <MainStack.Navigator initialRouteName="Home">
+    <MainStack.Navigator initialRouteName="Login">
+      <MainStack.Screen
+        options={{ headerShown: false }}
+        name="Login"
+        component={LoginScreen}
+      />
+      <MainStack.Screen
+        options={{ headerShown: false }}
+        name="Registration"
+        component={RegistrationScreen}
+      />
       <MainStack.Screen
         options={{ headerShown: false }}
         name="Home"

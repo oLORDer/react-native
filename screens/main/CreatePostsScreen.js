@@ -10,13 +10,18 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { getAuthStore } from '../../redux/auth/auth-selectors';
 import { Feather } from '@expo/vector-icons';
 import { Camera } from 'expo-camera';
 import * as Location from 'expo-location';
 
+import { sendPostToServer } from '../../redux/dashboard/dashboard-operations';
+
 import locationImg from '../../images/icons/location.png';
 
 export default function CreatePostsScreen({ navigation }) {
+  const { userId, login } = useSelector(getAuthStore);
   const [title, setTitle] = useState('');
   const [locationName, setLocationName] = useState('');
   const [camera, setCamera] = useState(null);
@@ -47,16 +52,21 @@ export default function CreatePostsScreen({ navigation }) {
     Keyboard.dismiss();
   };
 
-  const handleSubmit = async () => {
-    keyboardHide();
+  const clearForm = () => {
     setTitle('');
     setLocationName('');
     setPhoto('');
+  };
+
+  const handleSubmit = async () => {
+    sendPostToServer({ photo, title, location, userId, login });
+
+    keyboardHide();
+    clearForm();
 
     const locationData = await Location.getCurrentPositionAsync({});
     setLocation(locationData);
-    console.log('location>>>>>', locationData);
-    console.log('title>>', title, locationName);
+    console.log('location>>>>>', photo);
 
     navigation.navigate('DefaultPosts');
   };
@@ -151,6 +161,7 @@ export default function CreatePostsScreen({ navigation }) {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
+              onPress={clearForm}
             >
               <Feather name="trash-2" size={24} color="black" />
             </TouchableOpacity>

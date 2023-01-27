@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,11 +11,26 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, getCurrentUser } from '../../redux/auth/auth-operations';
 
 export default function LoginScreen({ navigation }) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const userId = useSelector((store) => {
+    return store.auth.userId;
+  });
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (userId === null) {
+      dispatch(getCurrentUser());
+    }
+    navigation.navigate(userId ? 'Home' : 'Login');
+  }, [userId]);
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
@@ -23,8 +38,8 @@ export default function LoginScreen({ navigation }) {
   };
 
   const handleSubmit = () => {
-    console.log(login, email, password);
     keyboardHide();
+    dispatch(login({ email, password }));
     setEmail('');
     setPassword('');
   };
