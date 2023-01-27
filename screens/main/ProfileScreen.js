@@ -8,68 +8,71 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthStore } from '../../redux/auth/auth-selectors';
+import { getAllPostsFromStore } from '../../redux/dashboard/dashboard-selector';
 
 import { logOut } from '../../redux/auth/auth-operations';
 
-import im from '../../images/bg.jpg';
 import shape from '../../images/icons/shapeOrange.png';
 import location from '../../images/icons/location.png';
 import like from '../../images/icons/like.png';
 
-const arr = [
-  {
-    id: 11,
-    img: im,
-    descr: 'Лес',
-    comments: 11,
-    location: 'Ivano-Frankivsk Region, Ukraine',
-    name: 'pari',
-    place: 'pari',
-    coords: { latitude: '48.92297644095258', longitude: '24.71031848277903' },
-  },
-  {
-    id: 12,
-    img: im,
-    descr: 'Озеро',
-    comments: 33,
-    location: '衡阳市,Китай, Хунань',
-    name: 'Китай',
-    place: 'Китай',
-    coords: { latitude: '26.899104665321406', longitude: '112.57420931307371' },
-  },
-  {
-    id: 13,
-    img: im,
-    descr: 'Озеро',
-    comments: 33,
-    location: 'kiev',
-    name: 'pari',
-    place: 'pari',
-    coords: { latitude: '48.856614', longitude: '2.3522219' },
-  },
-  {
-    id: 14,
-    img: im,
-    descr: 'Озеро',
-    comments: 33,
-    location: 'kiev',
-    name: 'pari',
-    place: 'pari',
-    coords: { latitude: '48.856614', longitude: '2.3522219' },
-  },
-  {
-    id: 15,
-    img: im,
-    descr: 'Река',
-    comments: 55,
-    location: 'chernivtsi',
-    coords: { latitude: '48.856614', longitude: '2.3522219' },
-  },
-];
+// const arr = [
+//   {
+//     id: 11,
+//     img: im,
+//     descr: 'Лес',
+//     comments: 11,
+//     location: 'Ivano-Frankivsk Region, Ukraine',
+//     name: 'pari',
+//     place: 'pari',
+//     coords: { latitude: '48.92297644095258', longitude: '24.71031848277903' },
+//   },
+//   {
+//     id: 12,
+//     img: im,
+//     descr: 'Озеро',
+//     comments: 33,
+//     location: '衡阳市,Китай, Хунань',
+//     name: 'Китай',
+//     place: 'Китай',
+//     coords: { latitude: '26.899104665321406', longitude: '112.57420931307371' },
+//   },
+//   {
+//     id: 13,
+//     img: im,
+//     descr: 'Озеро',
+//     comments: 33,
+//     location: 'kiev',
+//     name: 'pari',
+//     place: 'pari',
+//     coords: { latitude: '48.856614', longitude: '2.3522219' },
+//   },
+//   {
+//     id: 14,
+//     img: im,
+//     descr: 'Озеро',
+//     comments: 33,
+//     location: 'kiev',
+//     name: 'pari',
+//     place: 'pari',
+//     coords: { latitude: '48.856614', longitude: '2.3522219' },
+//   },
+//   {
+//     id: 15,
+//     img: im,
+//     descr: 'Река',
+//     comments: 55,
+//     location: 'chernivtsi',
+//     coords: { latitude: '48.856614', longitude: '2.3522219' },
+//   },
+// ];
 
 export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
+  const { login, avatarURL } = useSelector(getAuthStore);
+  const { posts } = useSelector(getAllPostsFromStore);
 
   const onLogout = () => {
     dispatch(logOut());
@@ -86,7 +89,7 @@ export default function ProfileScreen({ navigation }) {
             <View style={styles.avatarWpar}>
               <View style={styles.avatarBlock}>
                 <Image
-                  source={require('../../images/bg.jpg')}
+                  source={{ uri: avatarURL }}
                   style={styles.avatarImg}
                   resizeMode="cover"
                 ></Image>
@@ -100,11 +103,11 @@ export default function ProfileScreen({ navigation }) {
                 height={24}
               />
             </TouchableOpacity>
-            <Text style={styles.userName}>Natali Romanova</Text>
+            <Text style={styles.userName}>{login}</Text>
           </View>
           <FlatList
             style={styles.list}
-            data={arr}
+            data={posts}
             renderItem={({ item }) => (
               <View style={styles.item}>
                 <View style={styles.itemImgWrap}>

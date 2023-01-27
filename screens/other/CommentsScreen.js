@@ -160,7 +160,7 @@ const s = StyleSheet.create({
     marginHorizontal: 16,
     padding: 8,
     paddingLeft: 16,
-    backgroundColor: '#00000008',
+    backgroundColor: '#000',
     borderWidth: 1,
     borderColor: '#E8E8E8',
     borderRadius: 100,
@@ -186,7 +186,7 @@ const s = StyleSheet.create({
     borderRadius: 50,
   },
   comment: {
-    backgroundColor: '#00000008',
+    backgroundColor: '#000',
     marginHorizontal: 16,
     paddingHorizontal: 16,
     borderRadius: 6,

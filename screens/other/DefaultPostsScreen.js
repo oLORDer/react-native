@@ -92,11 +92,7 @@ export default function PostsScreen({ navigation }) {
       <View style={styles.user}>
         <View style={styles.userBlock}>
           <Image
-            source={
-              userInfo?.avatarURL
-                ? { uri: userInfo.avatarURL }
-                : require('../../images/bg.jpg')
-            }
+            source={userInfo?.avatarURL && { uri: userInfo.avatarURL }}
             style={styles.userImg}
             resizeMode="cover"
           ></Image>
@@ -108,7 +104,7 @@ export default function PostsScreen({ navigation }) {
       </View>
       <FlatList
         style={styles.list}
-        data={arr}
+        data={posts}
         renderItem={({ item }) => (
           <View style={styles.item}>
             <View style={styles.itemImgWrap}>
