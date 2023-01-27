@@ -1,4 +1,4 @@
-import { db, auth, storage } from '../../firebase/config';
+import { db, storage } from '../../firebase/config';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { doc, setDoc } from 'firebase/firestore';
 import uuid from 'react-native-uuid';
@@ -10,7 +10,7 @@ export const sendPostToServer = async () => {
     title,
     userId,
     login,
-    location,
+    Location,
     photo: photoURL,
     comments: [],
     creationDate: new Date().getTime(),
